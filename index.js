@@ -1,6 +1,8 @@
 const redux = require('redux')
 const createStore = redux.createStore
 
+const combineReducers = redux.combineReducers
+
 const BUY_Cake = 'BUY_CAKE'
 const BUY_IceCream = 'BUY_IceCream'
 
@@ -20,22 +22,32 @@ function buyIceCream() {
 
 // reducer .... (pre-state , action) => new state
 
-const initialState = {
-    noofCakes: 10,
+const initialCakeState = {
+    noofCakes: 10
+}
+
+
+const initialIceCreamState = {
     noofIceCreams:20
 }
 
-const reducer = (state = initialState, action) => {
+const Cakereducer = (state = initialCakeState, action) => {
     switch(action.type) {
         case BUY_Cake: return {
             ...state,
             noofCakes: state.noofCakes - 1
         }
+
+        default: return state;
+    }
+}
+
+const IceCreamreducer = (state = initialIceCreamState, action) => {
+    switch(action.type) {
         case BUY_IceCream: return {
             ...state,
             noofIceCreams: state.noofIceCreams - 1
         }
-
         default: return state;
     }
 }
@@ -51,7 +63,15 @@ const reducer = (state = initialState, action) => {
 
 
 // createStore accept hte reducer function which hold the initial state
-const store = createStore(reducer)
+
+
+// combine reducers accept an object of reducers as key value pairs 
+const rootReducer = combineReducers({
+    cake: Cakereducer,
+    IceCream: IceCreamreducer
+})
+//create store only accept one reducerr so we combine all the reducers and send
+const store = createStore(rootReducer)
 console.log('',store.getState())
 const unsubscribe = store.subscribe(() => console.log('',store.getState()));
 store.dispatch(buyCake())
