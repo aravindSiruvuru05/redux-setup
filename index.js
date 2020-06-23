@@ -3,6 +3,13 @@ const createStore = redux.createStore
 
 const combineReducers = redux.combineReducers
 
+// middlewares are custom extra functionalities for redux 
+const reduxLogger = require('redux-logger')
+const logger = reduxLogger.createLogger() // redux provides functionality to include middleware by apply middleware 
+
+const applyMiddleware = redux.applyMiddleware // by passing aply middleware to createsore as 2nd arameter
+
+
 const BUY_Cake = 'BUY_CAKE'
 const BUY_IceCream = 'BUY_IceCream'
 
@@ -71,11 +78,11 @@ const rootReducer = combineReducers({
     IceCream: IceCreamreducer
 })
 //create store only accept one reducerr so we combine all the reducers and send
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(logger))
 console.log('',store.getState())
-const unsubscribe = store.subscribe(() => console.log('',store.getState()));
+//const unsubscribe = store.subscribe(() => console.log('',store.getState())); // console.log by subscribing store is not needed as logger middle=ware take cares
 store.dispatch(buyCake())
 store.dispatch(buyIceCream())
 
 
-unsubscribe();
+//unsubscribe();
