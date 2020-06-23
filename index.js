@@ -1,3 +1,6 @@
+// when you dispatch the action .. the action is sent to reducer binded to store 
+// and then the reducer returns a new state values to the store and the state gets updated
+
 const redux = require('redux')
 const createStore = redux.createStore
 
